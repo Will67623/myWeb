@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="探索日常美食、特色料理與值得收藏的好味道。">
+  <title>日日食光｜尋找生活中的好味道</title>
+
+  <style>
+    :root {
+      --green: #58745c;
+      --deep-green: #344d3b;
+      --cream: #faf8f2;
+      --light-green: #edf1e8;
+      --text: #353b33;
+      --muted: #81877e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--text);
+      font-family: "Noto Sans TC", "Microsoft JhengHei",
+                   sans-serif;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    .navbar {
+      height: 76px;
+      padding: 0 8%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 248, 242, 0.96);
+      border-bottom: 1px solid #eae8df;
+    }
+
+    .logo {
+      color: var(--deep-green);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--green);
+    }
+
+    .hero {
+      min-height: 470px;
+      padding: 70px 8%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      background: var(--light-green);
+    }
+
+    .hero-content {
+      max-width: 470px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 13px;
+      letter-spacing: 3px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 16px 0;
+      font-size: clamp(34px, 4.5vw, 54px);
+      line-height: 1.45;
+      color: var(--deep-green);
+    }
+
+    .hero p {
+      color: #687267;
+      margin-bottom: 28px;
+    }
+
+    .primary-btn {
+      display: inline-block;
+      padding: 11px 28px;
+      color: white;
+      background: var(--green);
+      border: 0;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .primary-btn:hover {
+      background: var(--deep-green);
+      transform: translateY(-2px);
+    }
+
+    .hero-image {
+      width: 48%;
+      height: 330px;
+      object-fit: cover;
+      border-radius: 48% 48% 12px 12px;
+    }
+
+    .section {
+      max-width: 1180px;
+      margin: auto;
+      padding: 78px 28px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .section-heading h2 {
+      margin: 4px 0;
+      color: var(--deep-green);
+      font-size: 30px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-btn {
+      border: 1px solid #dfe4d9;
+      color: #596357;
+      background: white;
+      border-radius: 24px;
+      padding: 7px 18px;
+      cursor: pointer;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+
+    .search-box {
+      width: 230px;
+      max-width: 100%;
+      padding: 10px 16px;
+      border: 1px solid #e1e3d9;
+      border-radius: 25px;
+      background: white;
+      outline-color: var(--green);
+    }
+
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 26px;
+    }
+
+    .food-card {
+      overflow: hidden;
+      background: white;
+      border: 1px solid #eeece4;
+      border-radius: 14px;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .food-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px #394d3210;
+    }
+
+    .food-card img {
+      display: block;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: var(--light-green);
+    }
+
+    .food-info {
+      padding: 18px 20px 22px;
+    }
+
+    .tag {
+      display: inline-block;
+      color: var(--green);
+      background: var(--light-green);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    .food-info h3 {
+      margin: 10px 0 4px;
+      font-size: 19px;
+    }
+
+    .food-info p {
+      min-height: 52px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .price {
+      display: block;
+      margin-top: 14px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 45px 0;
+      color: var(--muted);
+    }
+
+    .about {
+      padding: 65px 25px;
+      text-align: center;
+      background: var(--light-green);
+    }
+
+    .about h2 {
+      color: var(--deep-green);
+    }
+
+    .about p {
+      max-width: 600px;
+      margin: 12px auto;
+      color: #687267;
+    }
+
+    footer {
+      padding: 26px;
+      text-align: center;
+      background: var(--deep-green);
+      color: #e8eee5;
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .navbar {
+        height: auto;
+        padding: 18px 6%;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        font-size: 13px;
+      }
+
+      .hero {
+        padding: 48px 7%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 28px;
+      }
+
+      .hero-image {
+        width: 100%;
+        height: 260px;
+        border-radius: 12px;
+      }
+
+      .section {
+        padding: 55px 18px;
+      }
+
+      .food-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .food-card img {
+        height: 165px;
+      }
+
+      .food-info {
+        padding: 13px;
+      }
+
+      .food-info h3 {
+        font-size: 16px;
+      }
+
+      .food-info p {
+        font-size: 13px;
+      }
+
+      .toolbar {
+        align-items: stretch;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .food-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .food-card img {
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <a class="logo" href="#">日日食光.</a>
+    <nav class="nav-links">
+      <a href="#">首頁</a>
+      <a href="#foods">美食探索</a>
+      <a href="#about">關於我們</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">GOOD FOOD, GOOD DAYS</span>
+        <h1>把平凡日子，<br>過成喜歡的味道。</h1>
+        <p>
+          從一碗熱騰騰的料理，到午後的小小甜點。
+          一起尋找生活裡值得細細品嚐的美好。
+        </p>
+        <a class="primary-btn" href="#foods">探索今日美食 →</a>
+      </div>
+
+      <img class="hero-image"
+        src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=85"
+        alt="新鮮蔬菜與健康料理"
+        onerror="this.style.display='none'">
+    </section>
+
+    <section class="section" id="foods">
+      <div class="section-heading">
+        <span class="eyebrow">TASTE & DISCOVER</span>
+        <h2>今日美食提案</h2>
+        <p>每一道料理，都有它值得被記住的理由。</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="filters">
+          <button class="filter-btn active" data-category="全部">全部</button>
+          <button class="filter-btn" data-category="主食">暖心主食</button>
+          <button class="filter-btn" data-category="輕食">清爽輕食</button>
+          <button class="filter-btn" data-category="甜點">療癒甜點</button>
+        </div>
+
+        <input class="search-box" id="search"
+          type="search" placeholder="搜尋料理名稱...">
+      </div>
+
+      <div class="food-grid" id="foodGrid"></div>
+    </section>
+
+    <section class="about" id="about">
+      <span class="eyebrow">ABOUT US</span>
+      <h2>關於日日食光</h2>
+      <p>
+        我們相信，美食不一定要昂貴，也不需要繁複。
+        用心挑選食材，慢慢享受每一餐，
+        就能讓普通的日常多一點幸福感。
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    日日食光 © 2026 ｜ 用一頓好飯，收藏生活的美好
+  </footer>
+
+  <script>
+    const foods = [
+      {
+        name: "日式豚骨拉麵",
+        category: "主食",
+        description: "濃郁湯頭搭配彈牙麵條，暖心又滿足。",
+        price: "NT$ 220",
+        image: "photo-1569718212165-3a8278d5f624"
+      },
+      {
+        name: "酪梨鮮蔬沙拉",
+        category: "輕食",
+        description: "新鮮蔬菜與綿密酪梨，清爽無負擔。",
+        price: "NT$ 180",
+        image: "photo-1512621776951-a57141f2eefd"
+      },
+      {
+        name: "草莓奶油蛋糕",
+        category: "甜點",
+        description: "柔軟蛋糕與酸甜草莓的經典組合。",
+        price: "NT$ 150",
+        image: "photo-1578985545062-69928b1d9587"
+      },
+      {
+        name: "日式咖哩飯",
+        category: "主食",
+        description: "香醇咖哩與豐富配料，簡單卻迷人。",
+        price: "NT$ 190",
+        image: "photo-1586190848861-99aa4a171e90"
+      },
+      {
+        name: "新鮮水果優格",
+        category: "輕食",
+        description: "酸甜優格搭配當季水果，輕盈又美味。",
+        price: "NT$ 120",
+        image: "photo-1488477181946-6428a0291777"
+      },
+      {
+        name: "手作可麗露",
+        category: "甜點",
+        description: "外層微酥、內裡柔軟，適合午後慢慢品嚐。",
+        price: "NT$ 85",
+        image: "photo-1555507036-ab1f4038808a"
+      }
+    ];
+
+    const grid = document.getElementById("foodGrid");
+    const search = document.getElementById("search");
+    const buttons = document.querySelectorAll(".filter-btn");
+
+    let currentCategory = "全部";
+
+    function renderFoods() {
+      const keyword = search.value.trim().toLowerCase();
+
+      const result = foods.filter(food => {
+        const matchCategory =
+          currentCategory === "全部" ||
+          food.category === currentCategory;
+
+        const matchKeyword =
+          food.name.toLowerCase().includes(keyword) ||
+          food.description.toLowerCase().includes(keyword);
+
+        return matchCategory && matchKeyword;
+      });
+
+      if (result.length === 0) {
+        grid.innerHTML =
+          '<p class="empty">找不到符合條件的料理，試試其他關鍵字吧！</p>';
+        return;
+      }
+
+      grid.innerHTML = result.map(food => `
+        <article class="food-card">
+          <img
+            src="https://images.unsplash.com/${food.image}?auto=format&fit=crop&w=700&q=80"
+            alt="${food.name}"
+            loading="lazy"
+            onerror="this.style.display='none'">
+          <div class="food-info">
+            <span class="tag">${food.category}</span>
+            <h3>${food.name}</h3>
+            <p>${food.description}</p>
+            <span class="price">${food.price}</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        currentCategory = button.dataset.category;
+
+        buttons.forEach(item => {
+          item.classList.toggle("active", item === button);
+        });
+
+        renderFoods();
+      });
+    });
+
+    search.addEventListener("input", renderFoods);
+
+    renderFoods();
+  </script>
+</body>
+</html>
