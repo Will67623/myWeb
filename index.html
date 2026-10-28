@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -6,647 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="探索日常美食、特色料理與值得收藏的好味道。">
   <title>日日食光｜尋找生活中的好味道</title>
-
   <style>
-    :root {
-      --green: #58745c;
-      --deep-green: #344d3b;
-      --cream: #faf8f2;
-      --light-green: #edf1e8;
-      --text: #353b33;
-      --muted: #81877e;
-      --heart: #c65d64;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      background: var(--cream);
-      color: var(--text);
-      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-      line-height: 1.8;
-    }
-
-    body.modal-open { overflow: hidden; }
-
-    a { color: inherit; text-decoration: none; }
-    button, input { font: inherit; }
-
-    button:focus-visible,
-    a:focus-visible,
-    input:focus-visible,
-    .food-card:focus-visible {
-      outline: 3px solid var(--green);
-      outline-offset: 4px;
-    }
-
-    /* 導覽列 */
-    .navbar {
-      min-height: 76px;
-      padding: 0 8%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      background: rgba(250, 248, 242, 0.96);
-      border-bottom: 1px solid #eae8df;
-    }
-
-    .logo {
-      color: var(--deep-green);
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      white-space: nowrap;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 26px;
-      font-size: 14px;
-    }
-
-    .nav-links a {
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--green);
-    }
-
-    .nav-favorite-count {
-      display: inline-flex;
-      min-width: 21px;
-      height: 21px;
-      margin-left: 3px;
-      padding: 0 5px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 20px;
-      background: var(--light-green);
-      color: var(--deep-green);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    /* 首頁主視覺 */
-    .hero {
-      min-height: 470px;
-      padding: 70px 8%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 40px;
-      background: var(--light-green);
-    }
-
-    .hero-content { max-width: 470px; }
-
-    .eyebrow {
-      color: var(--green);
-      font-size: 13px;
-      letter-spacing: 3px;
-      font-weight: 700;
-    }
-
-    h1 {
-      margin: 16px 0;
-      font-size: clamp(34px, 4.5vw, 54px);
-      line-height: 1.45;
-      color: var(--deep-green);
-    }
-
-    .hero p {
-      color: #687267;
-      margin-bottom: 28px;
-    }
-
-    .primary-btn {
-      display: inline-block;
-      padding: 11px 28px;
-      color: white;
-      background: var(--green);
-      border: 0;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .primary-btn:hover {
-      background: var(--deep-green);
-      transform: translateY(-2px);
-    }
-
-    .hero-image {
-      width: 48%;
-      height: 330px;
-      object-fit: cover;
-      border-radius: 48% 48% 12px 12px;
-    }
-
-    /* 美食探索區 */
-    .section {
-      max-width: 1180px;
-      margin: auto;
-      padding: 78px 28px;
-    }
-
-    .section-heading {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .section-heading h2 {
-      margin: 4px 0;
-      color: var(--deep-green);
-      font-size: 30px;
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .filter-btn {
-      border: 1px solid #dfe4d9;
-      color: #596357;
-      background: white;
-      border-radius: 24px;
-      padding: 7px 18px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .filter-btn.active,
-    .filter-btn:hover {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
-
-    .search-box {
-      width: 230px;
-      max-width: 100%;
-      padding: 10px 16px;
-      border: 1px solid #e1e3d9;
-      border-radius: 25px;
-      background: white;
-      outline-color: var(--green);
-    }
-
-    .result-summary {
-      margin: -15px 0 22px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .food-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 26px;
-    }
-
-    .food-card {
-      position: relative;
-      overflow: hidden;
-      background: white;
-      border: 1px solid #eeece4;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .food-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 28px #394d3210;
-    }
-
-    .food-card img {
-      display: block;
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      background: var(--light-green);
-    }
-
-    /* 首頁收藏愛心 */
-    .favorite-btn {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 3;
-      width: 43px;
-      height: 43px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      border: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.95);
-      color: #71806d;
-      font-size: 27px;
-      line-height: 1;
-      cursor: pointer;
-      box-shadow: 0 2px 10px #00000012;
-      transition: transform 0.2s, color 0.2s;
-    }
-
-    .favorite-btn:hover { transform: scale(1.1); }
-
-    .favorite-btn.is-favorite { color: var(--heart); }
-
-    .food-info { padding: 18px 20px 22px; }
-
-    .tag {
-      display: inline-block;
-      color: var(--green);
-      background: var(--light-green);
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-    }
-
-    .food-info h3 {
-      margin: 10px 0 4px;
-      font-size: 19px;
-    }
-
-    .food-info p {
-      min-height: 52px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .price {
-      display: block;
-      margin-top: 14px;
-      color: var(--green);
-      font-weight: 700;
-    }
-
-    .card-hint {
-      display: block;
-      margin-top: 10px;
-      color: var(--green);
-      font-size: 12px;
-    }
-
-    .empty {
-      grid-column: 1 / -1;
-      padding: 55px 20px;
-      text-align: center;
-      color: var(--muted);
-      background: white;
-      border-radius: 14px;
-    }
-
-    .empty-icon {
-      display: block;
-      margin-bottom: 10px;
-      color: #9ba995;
-      font-size: 34px;
-    }
-
-    .empty p { margin: 4px 0; }
-
-    .empty button {
-      margin-top: 15px;
-      padding: 8px 20px;
-      border: 1px solid #dfe4d9;
-      border-radius: 24px;
-      background: var(--light-green);
-      color: var(--deep-green);
-      cursor: pointer;
-    }
-
-    /* 收藏操作提示 */
-    .toast {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      z-index: 2000;
-      max-width: calc(100% - 32px);
-      padding: 11px 22px;
-      border-radius: 30px;
-      background: var(--deep-green);
-      color: white;
-      font-size: 14px;
-      text-align: center;
-      box-shadow: 0 5px 20px #00000020;
-      opacity: 0;
-      visibility: hidden;
-      transform: translate(-50%, 10px);
-      transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-    }
-
-    .toast.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-50%, 0);
-    }
-
-    /* 美食詳細介紹視窗 */
-    .food-detail-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(35, 45, 35, 0.58);
-      backdrop-filter: blur(5px);
-    }
-
-    .food-detail-overlay.show { display: flex; }
-
-    .food-detail-modal {
-      position: relative;
-      width: min(760px, 100%);
-      max-height: 90vh;
-      overflow-y: auto;
-      background: var(--cream);
-      border-radius: 20px;
-      box-shadow: 0 20px 70px #00000025;
-      animation: detailFadeIn 0.25s ease;
-    }
-
-    .food-detail-close {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      z-index: 4;
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 0;
-      border-radius: 50%;
-      background: white;
-      color: var(--deep-green);
-      font-size: 27px;
-      line-height: 1;
-      cursor: pointer;
-      box-shadow: 0 2px 12px #00000015;
-    }
-
-    .food-detail-close:hover { background: var(--light-green); }
-
-    .food-detail-image {
-      display: block;
-      width: 100%;
-      height: 320px;
-      object-fit: cover;
-      background: var(--light-green);
-    }
-
-    .food-detail-content { padding: 28px 34px 34px; }
-
-    .food-detail-content h2 {
-      margin: 12px 0 8px;
-      color: var(--deep-green);
-      font-size: 30px;
-      line-height: 1.5;
-    }
-
-    .food-detail-description {
-      margin: 0;
-      color: #687267;
-      line-height: 2;
-      overflow-wrap: anywhere;
-    }
-
-    .food-detail-price {
-      display: block;
-      margin: 16px 0 14px;
-      color: var(--green);
-      font-size: 23px;
-      font-weight: 700;
-    }
-
-    /* 詳細介紹頁收藏按鈕 */
-    .detail-favorite-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 9px 18px;
-      border: 1px solid #dfe4d9;
-      border-radius: 24px;
-      background: white;
-      color: var(--green);
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .detail-favorite-btn:hover { background: var(--light-green); }
-
-    .detail-favorite-btn.is-favorite {
-      color: var(--heart);
-      border-color: #e9c9ca;
-      background: #fff5f4;
-    }
-
-    .detail-favorite-icon {
-      font-size: 21px;
-      line-height: 1;
-    }
-
-    .detail-divider {
-      height: 1px;
-      margin: 22px 0;
-      background: #e8e7dd;
-    }
-
-    .food-detail-subtitle {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin: 0 0 7px;
-      color: var(--deep-green);
-      font-size: 18px;
-    }
-
-    .food-detail-subtitle::before {
-      content: "";
-      width: 4px;
-      height: 20px;
-      flex-shrink: 0;
-      border-radius: 4px;
-      background: #91a68a;
-    }
-
-    .detail-section { margin-top: 22px; }
-
-    .detail-note {
-      margin-top: 26px;
-      padding: 14px 17px;
-      border-radius: 10px;
-      background: var(--light-green);
-      color: var(--deep-green);
-      font-size: 13px;
-    }
-
-    /* 關於我們 */
-    .about {
-      padding: 65px 25px;
-      text-align: center;
-      background: var(--light-green);
-    }
-
-    .about h2 { color: var(--deep-green); }
-
-    .about p {
-      max-width: 600px;
-      margin: 12px auto;
-      color: #687267;
-    }
-
-    footer {
-      padding: 26px;
-      text-align: center;
-      background: var(--deep-green);
-      color: #e8eee5;
-      font-size: 13px;
-    }
-
-    @keyframes detailFadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* 平板與手機版 */
-    @media (max-width: 760px) {
-      .navbar {
-        padding: 18px 6%;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-
-      .nav-links { gap: 14px; font-size: 13px; }
-
-      .hero {
-        padding: 48px 7%;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 28px;
-      }
-
-      .hero-image {
-        width: 100%;
-        height: 260px;
-        border-radius: 12px;
-      }
-
-      .section { padding: 55px 18px; }
-
-      .food-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-      }
-
-      .food-card img { height: 165px; }
-      .food-info { padding: 13px; }
-      .food-info h3 { font-size: 16px; }
-      .food-info p { font-size: 13px; }
-
-      .toolbar { align-items: stretch; }
-      .search-box { width: 100%; }
-
-      .food-detail-image { height: 250px; }
-      .food-detail-content { padding: 24px; }
-    }
-
-    @media (max-width: 420px) {
-      .food-grid { grid-template-columns: 1fr; }
-      .food-card img { height: 220px; }
-
-      .food-detail-overlay { padding: 10px; }
-
-      .food-detail-modal {
-        max-height: 94vh;
-        border-radius: 15px;
-      }
-
-      .food-detail-image { height: 210px; }
-      .food-detail-content { padding: 20px; }
-      .food-detail-content h2 { font-size: 25px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+    :root{--green:#58745c;--deep-green:#344d3b;--cream:#faf8f2;--light-green:#edf1e8;--text:#353b33;--muted:#81877e;--heart:#c65d64}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--text);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;line-height:1.8}body.modal-open{overflow:hidden}
+    a{color:inherit;text-decoration:none}button,input,select{font:inherit}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,.food-card:focus-visible{outline:3px solid var(--green);outline-offset:4px}
+    .navbar{min-height:76px;padding:0 8%;display:flex;align-items:center;justify-content:space-between;gap:20px;background:rgba(250,248,242,.96);border-bottom:1px solid #eae8df}
+    .logo{color:var(--deep-green);font-size:24px;font-weight:800;letter-spacing:2px;white-space:nowrap}.nav-links{display:flex;flex-wrap:wrap;gap:26px;font-size:14px}.nav-links a{transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--green)}
+    .nav-favorite-count{display:inline-flex;min-width:21px;height:21px;margin-left:3px;padding:0 5px;align-items:center;justify-content:center;border-radius:20px;background:var(--light-green);color:var(--deep-green);font-size:11px;font-weight:700}
+    .hero{min-height:470px;padding:70px 8%;display:flex;align-items:center;justify-content:space-between;gap:40px;background:var(--light-green)}.hero-content{max-width:470px}.eyebrow{color:var(--green);font-size:13px;letter-spacing:3px;font-weight:700}
+    h1{margin:16px 0;font-size:clamp(34px,4.5vw,54px);line-height:1.45;color:var(--deep-green)}.hero p{color:#687267;margin-bottom:28px}.primary-btn{display:inline-block;padding:11px 28px;color:white;background:var(--green);border:0;border-radius:30px;cursor:pointer;transition:.2s}.primary-btn:hover{background:var(--deep-green);transform:translateY(-2px)}
+    .hero-image{width:48%;height:330px;object-fit:cover;border-radius:48% 48% 12px 12px}.section{max-width:1180px;margin:auto;padding:78px 28px}.section-heading{text-align:center;margin-bottom:32px}.section-heading h2{margin:4px 0;color:var(--deep-green);font-size:30px}.section-heading p{color:var(--muted);font-size:14px}
+    .toolbar{display:flex;flex-direction:column;gap:18px;margin-bottom:25px}.filters{display:flex;flex-wrap:wrap;gap:10px}.filter-btn{border:1px solid #dfe4d9;color:#596357;background:white;border-radius:24px;padding:7px 18px;cursor:pointer;transition:.2s}.filter-btn.active,.filter-btn:hover{background:var(--green);color:white;border-color:var(--green)}
+    .search-filter-row{display:grid;grid-template-columns:minmax(220px,1.5fr) repeat(2,minmax(130px,.7fr)) minmax(170px,.9fr) auto;gap:12px;align-items:end}
+    .control-group{display:flex;flex-direction:column;gap:5px}.control-group label{font-size:12px;color:#687267;font-weight:700}.search-box,.price-input,.sort-select{width:100%;min-width:0;padding:10px 13px;border:1px solid #e1e3d9;border-radius:12px;background:white;color:var(--text);outline-color:var(--green)}
+    .price-range{display:grid;grid-template-columns:1fr 1fr;gap:7px}.price-input{padding:10px 9px}.reset-btn{height:44px;padding:8px 16px;border:1px solid #dfe4d9;border-radius:12px;background:var(--light-green);color:var(--deep-green);cursor:pointer;white-space:nowrap}.reset-btn:hover{background:#dfe8d8}
+    .result-summary{margin:0 0 22px;color:var(--muted);font-size:13px}.food-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}.food-card{position:relative;overflow:hidden;background:white;border:1px solid #eeece4;border-radius:14px;cursor:pointer;transition:transform .25s,box-shadow .25s}.food-card:hover{transform:translateY(-5px);box-shadow:0 12px 28px #394d3210}
+    .food-card img{display:block;width:100%;height:220px;object-fit:cover;background:var(--light-green)}.favorite-btn{position:absolute;top:12px;right:12px;z-index:3;width:43px;height:43px;display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.95);color:#71806d;font-size:27px;line-height:1;cursor:pointer;box-shadow:0 2px 10px #00000012;transition:transform .2s,color .2s}.favorite-btn:hover{transform:scale(1.1)}.favorite-btn.is-favorite{color:var(--heart)}
+    .food-info{padding:18px 20px 22px}.tag{display:inline-block;color:var(--green);background:var(--light-green);padding:3px 10px;border-radius:20px;font-size:12px}.food-info h3{margin:10px 0 4px;font-size:19px}.food-info p{min-height:52px;margin:0;color:var(--muted);font-size:14px}.price{display:block;margin-top:14px;color:var(--green);font-weight:700}.card-hint{display:block;margin-top:10px;color:var(--green);font-size:12px}
+    .empty{grid-column:1/-1;padding:55px 20px;text-align:center;color:var(--muted);background:white;border-radius:14px}.empty-icon{display:block;margin-bottom:10px;color:#9ba995;font-size:34px}.empty p{margin:4px 0}.empty button{margin-top:15px;padding:8px 20px;border:1px solid #dfe4d9;border-radius:24px;background:var(--light-green);color:var(--deep-green);cursor:pointer}
+    .toast{position:fixed;bottom:25px;left:50%;z-index:2000;max-width:calc(100% - 32px);padding:11px 22px;border-radius:30px;background:var(--deep-green);color:white;font-size:14px;text-align:center;box-shadow:0 5px 20px #00000020;opacity:0;visibility:hidden;transform:translate(-50%,10px);transition:opacity .2s,transform .2s,visibility .2s}.toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+    .food-detail-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(35,45,35,.58);backdrop-filter:blur(5px)}.food-detail-overlay.show{display:flex}.food-detail-modal{position:relative;width:min(760px,100%);max-height:90vh;overflow-y:auto;background:var(--cream);border-radius:20px;box-shadow:0 20px 70px #00000025;animation:detailFadeIn .25s ease}
+    .food-detail-close{position:absolute;top:14px;right:14px;z-index:4;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:white;color:var(--deep-green);font-size:27px;line-height:1;cursor:pointer;box-shadow:0 2px 12px #00000015}.food-detail-close:hover{background:var(--light-green)}.food-detail-image{display:block;width:100%;height:320px;object-fit:cover;background:var(--light-green)}.food-detail-content{padding:28px 34px 34px}.food-detail-content h2{margin:12px 0 8px;color:var(--deep-green);font-size:30px;line-height:1.5}.food-detail-description{margin:0;color:#687267;line-height:2;overflow-wrap:anywhere}.food-detail-price{display:block;margin:16px 0 14px;color:var(--green);font-size:23px;font-weight:700}
+    .detail-favorite-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 18px;border:1px solid #dfe4d9;border-radius:24px;background:white;color:var(--green);cursor:pointer;transition:background .2s,color .2s}.detail-favorite-btn:hover{background:var(--light-green)}.detail-favorite-btn.is-favorite{color:var(--heart);border-color:#e9c9ca;background:#fff5f4}.detail-favorite-icon{font-size:21px;line-height:1}.detail-divider{height:1px;margin:22px 0;background:#e8e7dd}.food-detail-subtitle{display:flex;align-items:center;gap:9px;margin:0 0 7px;color:var(--deep-green);font-size:18px}.food-detail-subtitle:before{content:"";width:4px;height:20px;flex-shrink:0;border-radius:4px;background:#91a68a}.detail-section{margin-top:22px}.detail-note{margin-top:26px;padding:14px 17px;border-radius:10px;background:var(--light-green);color:var(--deep-green);font-size:13px}
+    .about{padding:65px 25px;text-align:center;background:var(--light-green)}.about h2{color:var(--deep-green)}.about p{max-width:600px;margin:12px auto;color:#687267}footer{padding:26px;text-align:center;background:var(--deep-green);color:#e8eee5;font-size:13px}
+    @keyframes detailFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:950px){.search-filter-row{grid-template-columns:repeat(2,minmax(0,1fr))}.search-group{grid-column:1/-1}.reset-btn{width:100%}}
+    @media(max-width:760px){.navbar{padding:18px 6%;flex-wrap:wrap;gap:12px}.nav-links{gap:14px;font-size:13px}.hero{padding:48px 7%;flex-direction:column;align-items:stretch;gap:28px}.hero-image{width:100%;height:260px;border-radius:12px}.section{padding:55px 18px}.food-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.food-card img{height:165px}.food-info{padding:13px}.food-info h3{font-size:16px}.food-info p{font-size:13px}.food-detail-image{height:250px}.food-detail-content{padding:24px}}
+    @media(max-width:480px){.food-grid{grid-template-columns:1fr}.food-card img{height:220px}.search-filter-row{grid-template-columns:1fr}.search-group{grid-column:auto}.food-detail-overlay{padding:10px}.food-detail-modal{max-height:94vh;border-radius:15px}.food-detail-image{height:210px}.food-detail-content{padding:20px}.food-detail-content h2{font-size:25px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
   </style>
 </head>
-
 <body>
   <header class="navbar">
     <a class="logo" href="#" aria-label="日日食光首頁">日日食光.</a>
-
     <nav class="nav-links" aria-label="主要導覽">
-      <a href="#" id="homeNav">首頁</a>
-      <a href="#foods" id="exploreNav">美食探索</a>
-      <a href="#foods" id="favoritesNav">
-        我的收藏 <span class="nav-favorite-count" id="favoriteCount">0</span>
-      </a>
+      <a href="#" id="homeNav">首頁</a><a href="#foods" id="exploreNav">美食探索</a>
+      <a href="#foods" id="favoritesNav">我的收藏 <span class="nav-favorite-count" id="favoriteCount">0</span></a>
       <a href="#about" id="aboutNav">關於我們</a>
     </nav>
   </header>
-
   <main>
     <section class="hero">
-      <div class="hero-content">
-        <span class="eyebrow">GOOD FOOD, GOOD DAYS</span>
-        <h1>把平凡日子，<br>過成喜歡的味道。</h1>
-        <p>
-          從一碗熱騰騰的料理，到午後的小小甜點。
-          一起尋找生活裡值得細細品嚐的美好。
-        </p>
-        <a class="primary-btn" href="#foods" id="heroExplore">
-          探索今日美食 →
-        </a>
+      <div class="hero-content"><span class="eyebrow">GOOD FOOD, GOOD DAYS</span><h1>把平凡日子，<br>過成喜歡的味道。</h1>
+        <p>從一碗熱騰騰的料理，到午後的小小甜點。一同尋找生活裡值得細細品嚐的美好。</p>
+        <a class="primary-btn" href="#foods" id="heroExplore">探索今日美食 →</a>
       </div>
-
-      <img class="hero-image"
-        src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=85"
-        alt="新鮮蔬菜與健康料理"
-        onerror="this.style.display='none'">
+      <img class="hero-image" src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=85" alt="新鮮蔬菜與健康料理" onerror="this.style.display='none'">
     </section>
-
     <section class="section" id="foods">
-      <div class="section-heading">
-        <span class="eyebrow" id="sectionEyebrow">TASTE & DISCOVER</span>
-        <h2 id="sectionTitle">今日美食提案</h2>
-        <p id="sectionDescription">每一道料理，都有它值得被記住的理由。</p>
-      </div>
-
+      <div class="section-heading"><span class="eyebrow" id="sectionEyebrow">TASTE & DISCOVER</span><h2 id="sectionTitle">今日美食提案</h2><p id="sectionDescription">每一道料理，都有它值得被記住的理由。</p></div>
       <div class="toolbar">
         <div class="filters" aria-label="料理分類">
           <button type="button" class="filter-btn active" data-category="全部">全部</button>
@@ -655,636 +62,106 @@
           <button type="button" class="filter-btn" data-category="甜點">療癒甜點</button>
           <button type="button" class="filter-btn" data-category="收藏">♡ 我的收藏</button>
         </div>
-
-        <input class="search-box" id="search"
-          type="search"
-          aria-label="搜尋料理"
-          placeholder="搜尋料理名稱、食材或特色...">
+        <div class="search-filter-row">
+          <div class="control-group search-group"><label for="search">關鍵字搜尋</label><input class="search-box" id="search" type="search" placeholder="名稱、食材、特色、推薦理由..." aria-label="搜尋料理名稱、食材、特色或介紹"></div>
+          <div class="control-group"><label for="minPrice">最低價格（元）</label><input class="price-input" id="minPrice" type="number" min="0" step="1" placeholder="不限" inputmode="numeric"></div>
+          <div class="control-group"><label for="maxPrice">最高價格（元）</label><input class="price-input" id="maxPrice" type="number" min="0" step="1" placeholder="不限" inputmode="numeric"></div>
+          <div class="control-group"><label for="sortSelect">排序方式</label><select class="sort-select" id="sortSelect"><option value="default">預設順序</option><option value="price-asc">價格由低到高</option><option value="price-desc">價格由高到低</option><option value="name-asc">料理名稱 A–Z</option></select></div>
+          <button type="button" class="reset-btn" id="resetFilters">重設篩選</button>
+        </div>
       </div>
-
       <p class="result-summary" id="resultSummary" aria-live="polite"></p>
       <div class="food-grid" id="foodGrid" aria-live="polite"></div>
     </section>
-
-    <section class="about" id="about">
-      <span class="eyebrow">ABOUT US</span>
-      <h2>關於日日食光</h2>
-      <p>
-        我們相信，美食不一定要昂貴，也不需要繁複。
-        用心挑選食材，慢慢享受每一餐，
-        就能讓普通的日常多一點幸福感。
-      </p>
-    </section>
+    <section class="about" id="about"><span class="eyebrow">ABOUT US</span><h2>關於日日食光</h2><p>我們相信，美食不一定要昂貴，也不需要繁複。用心挑選食材，慢慢享受每一餐，就能讓普通的日常多一點幸福感。</p></section>
   </main>
+  <footer>日日食光 © 2026 ｜ 用一頓好飯，收藏生活的美好</footer>
 
-  <footer>
-    日日食光 © 2026 ｜ 用一頓好飯，收藏生活的美好
-  </footer>
-
-  <!-- 美食詳細介紹視窗 -->
-  <div class="food-detail-overlay" id="foodDetailOverlay"
-       role="dialog" aria-modal="true"
-       aria-labelledby="detailName" aria-hidden="true">
+  <div class="food-detail-overlay" id="foodDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="detailName" aria-hidden="true">
     <article class="food-detail-modal" id="foodDetailModal">
-      <button type="button" class="food-detail-close"
-              id="closeFoodDetail" aria-label="關閉詳細介紹">×</button>
-
+      <button type="button" class="food-detail-close" id="closeFoodDetail" aria-label="關閉詳細介紹">×</button>
       <img class="food-detail-image" id="detailImage" src="" alt="">
-
       <div class="food-detail-content">
-        <span class="tag" id="detailCategory"></span>
-        <h2 id="detailName">料理名稱</h2>
-        <p class="food-detail-description" id="detailDescription"></p>
-        <span class="food-detail-price" id="detailPrice"></span>
-
-        <button type="button" class="detail-favorite-btn"
-                id="detailFavoriteBtn" aria-pressed="false">
-          <span class="detail-favorite-icon" id="detailFavoriteIcon">♡</span>
-          <span id="detailFavoriteText">加入我的收藏</span>
-        </button>
-
+        <span class="tag" id="detailCategory"></span><h2 id="detailName">料理名稱</h2><p class="food-detail-description" id="detailDescription"></p><span class="food-detail-price" id="detailPrice"></span>
+        <button type="button" class="detail-favorite-btn" id="detailFavoriteBtn" aria-pressed="false"><span class="detail-favorite-icon" id="detailFavoriteIcon">♡</span><span id="detailFavoriteText">加入我的收藏</span></button>
         <div class="detail-divider"></div>
-
-        <section class="detail-section">
-          <h3 class="food-detail-subtitle">料理特色</h3>
-          <p class="food-detail-description" id="detailFeatures"></p>
-        </section>
-
-        <section class="detail-section">
-          <h3 class="food-detail-subtitle">主要食材</h3>
-          <p class="food-detail-description" id="detailIngredients"></p>
-        </section>
-
-        <section class="detail-section">
-          <h3 class="food-detail-subtitle">推薦理由</h3>
-          <p class="food-detail-description" id="detailReason"></p>
-        </section>
-
-        <section class="detail-section">
-          <h3 class="food-detail-subtitle">適合的用餐時段</h3>
-          <p class="food-detail-description" id="detailOccasion"></p>
-        </section>
-
-        <div class="detail-note">
-          一道好料理，讓平凡的日常也值得期待。
-        </div>
+        <section class="detail-section"><h3 class="food-detail-subtitle">料理特色</h3><p class="food-detail-description" id="detailFeatures"></p></section>
+        <section class="detail-section"><h3 class="food-detail-subtitle">主要食材</h3><p class="food-detail-description" id="detailIngredients"></p></section>
+        <section class="detail-section"><h3 class="food-detail-subtitle">推薦理由</h3><p class="food-detail-description" id="detailReason"></p></section>
+        <section class="detail-section"><h3 class="food-detail-subtitle">適合的用餐時段</h3><p class="food-detail-description" id="detailOccasion"></p></section>
+        <div class="detail-note">一道好料理，讓平凡的日常也值得期待。</div>
       </div>
     </article>
   </div>
-
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    /* =========================
-       料理資料
-       可在此修改料理名稱、分類、介紹、價格與圖片
-    ========================= */
     const foods = [
-      {
-        name: "日式豚骨拉麵",
-        category: "主食",
-        description: "濃郁湯頭搭配彈牙麵條，暖心又滿足。",
-        price: "NT$ 220",
-        image: "photo-1569718212165-3a8278d5f624",
-        features: "湯頭香醇濃厚，搭配滑順麵條、叉燒與蔥花，呈現經典日式拉麵風味。湯頭的醇厚香氣與配料相互融合，每一口都帶來豐富的味覺體驗。",
-        ingredients: "豚骨湯頭、拉麵、叉燒、蔥花、木耳與溏心蛋。實際配料會依店家做法有所不同。",
-        reason: "適合喜歡濃郁湯頭與豐富配料的人。熱騰騰的湯麵搭配多種配料，讓一頓飯兼具香氣、口感與飽足感。",
-        occasion: "午餐、晚餐，或想好好享用一頓熱食的時候。"
-      },
-      {
-        name: "酪梨鮮蔬沙拉",
-        category: "輕食",
-        description: "新鮮蔬菜與綿密酪梨，清爽無負擔。",
-        price: "NT$ 180",
-        image: "photo-1512621776951-a57141f2eefd",
-        features: "多種蔬菜呈現自然色彩，搭配柔滑酪梨與清爽醬汁，口感豐富。酪梨的綿密與蔬菜的爽脆形成有趣的層次。",
-        ingredients: "酪梨、生菜、小番茄、小黃瓜與沙拉醬，也可以依喜好加入堅果或其他蔬菜。",
-        reason: "蔬菜色彩繽紛、口感層次多，適合喜歡清新蔬食風味的人。可以依照當季食材搭配，呈現不同的色彩與滋味。",
-        occasion: "午餐、早午餐，或想享用清爽餐點的時候。"
-      },
-      {
-        name: "草莓奶油蛋糕",
-        category: "甜點",
-        description: "柔軟蛋糕與酸甜草莓的經典組合。",
-        price: "NT$ 150",
-        image: "photo-1578985545062-69928b1d9587",
-        features: "柔軟蛋糕體搭配滑順奶油與草莓果香，呈現甜美細緻的口感。草莓的自然果香與奶油香氣相互襯托，帶來經典的甜點風味。",
-        ingredients: "蛋糕體、鮮奶油、草莓、雞蛋與麵粉。實際食材依各店家的配方而定。",
-        reason: "草莓的清新果香搭配奶油香氣，外觀也相當精緻，適合喜歡經典水果甜點的人。",
-        occasion: "下午茶、生日慶祝、聚會分享，或飯後甜點。"
-      },
-      {
-        name: "日式咖哩飯",
-        category: "主食",
-        description: "香醇咖哩與豐富配料，簡單卻迷人。",
-        price: "NT$ 190",
-        image: "photo-1586190848861-99aa4a171e90",
-        features: "香料與醬汁的香氣包覆米飯，搭配燉煮入味的蔬菜與主食配料，呈現溫暖的日式家常風味。",
-        ingredients: "白飯、咖哩醬、馬鈴薯、紅蘿蔔與洋蔥，可搭配雞肉、豬肉或其他喜愛的配料。",
-        reason: "香料香氣與米飯相互融合，是許多人熟悉又喜愛的日式家常料理。配料也能依照個人喜好自由搭配。",
-        occasion: "午餐、晚餐，或想享用飽足感十足的料理時。"
-      },
-      {
-        name: "新鮮水果優格",
-        category: "輕食",
-        description: "酸甜優格搭配當季水果，輕盈又美味。",
-        price: "NT$ 120",
-        image: "photo-1488477181946-6428a0291777",
-        features: "綿密優格結合水果的自然甜味，呈現清爽的酸甜層次。搭配不同季節的水果，每一碗都能呈現繽紛的色彩。",
-        ingredients: "原味優格、當季水果，可依喜好搭配燕麥、堅果或蜂蜜。",
-        reason: "食材搭配彈性高，可以依照當季水果與個人喜好變化出不同風味，也很適合做成色彩繽紛的早餐。",
-        occasion: "早餐、下午點心，或正餐之間的小點心。"
-      },
-      {
-        name: "手作可麗露",
-        category: "甜點",
-        description: "外層微酥、內裡柔軟，適合午後慢慢品嚐。",
-        price: "NT$ 85",
-        image: "photo-1555507036-ab1f4038808a",
-        features: "外層帶有焦糖香氣，內部柔軟濕潤，呈現法式甜點細緻的口感。小巧的外形與深色焦糖表面，也讓它成為咖啡館裡常見的精緻點心。",
-        ingredients: "牛奶、雞蛋、麵粉、糖、奶油與香草。實際食材依烘焙配方而定。",
-        reason: "焦糖香氣與柔軟內餡形成迷人的口感對比，小巧精緻，適合搭配咖啡或茶點享用。",
-        occasion: "下午茶、咖啡時光，或想享用精緻小甜點的時候。"
-      }
+      {name:"日式豚骨拉麵",category:"主食",description:"濃郁湯頭搭配彈牙麵條，暖心又滿足。",price:"NT$ 220",image:"photo-1569718212165-3a8278d5f624",features:"湯頭香醇濃厚，搭配滑順麵條、叉燒與蔥花，呈現經典日式拉麵風味。湯頭的醇厚香氣與配料相互融合，每一口都帶來豐富的味覺體驗。",ingredients:"豚骨湯頭、拉麵、叉燒、蔥花、木耳與溏心蛋。實際配料會依店家做法有所不同。",reason:"適合喜歡濃郁湯頭與豐富配料的人。熱騰騰的湯麵搭配多種配料，讓一頓飯兼具香氣、口感與飽足感。",occasion:"午餐、晚餐，或想好好享用一頓熱食的時候。"},
+      {name:"酪梨鮮蔬沙拉",category:"輕食",description:"新鮮蔬菜與綿密酪梨，清爽無負擔。",price:"NT$ 180",image:"photo-1512621776951-a57141f2eefd",features:"多種蔬菜呈現自然色彩，搭配柔滑酪梨與清爽醬汁，口感豐富。酪梨的綿密與蔬菜的爽脆形成有趣的層次。",ingredients:"酪梨、生菜、小番茄、小黃瓜與沙拉醬，也可以依喜好加入堅果或其他蔬菜。",reason:"蔬菜色彩繽紛、口感層次多，適合喜歡清新蔬食風味的人。可以依照當季食材搭配，呈現不同的色彩與滋味。",occasion:"午餐、早午餐，或想享用清爽餐點的時候。"},
+      {name:"草莓奶油蛋糕",category:"甜點",description:"柔軟蛋糕與酸甜草莓的經典組合。",price:"NT$ 150",image:"photo-1578985545062-69928b1d9587",features:"柔軟蛋糕體搭配滑順奶油與草莓果香，呈現甜美細緻的口感。草莓的自然果香與奶油香氣相互襯托，帶來經典的甜點風味。",ingredients:"蛋糕體、鮮奶油、草莓、雞蛋與麵粉。實際食材依各店家的配方而定。",reason:"草莓的清新果香搭配奶油香氣，外觀也相當精緻，適合喜歡經典水果甜點的人。",occasion:"下午茶、生日慶祝、聚會分享，或飯後甜點。"},
+      {name:"日式咖哩飯",category:"主食",description:"香醇咖哩與豐富配料，簡單卻迷人。",price:"NT$ 190",image:"photo-1586190848861-99aa4a171e90",features:"香料與醬汁的香氣包覆米飯，搭配燉煮入味的蔬菜與主食配料，呈現溫暖的日式家常風味。",ingredients:"白飯、咖哩醬、馬鈴薯、紅蘿蔔與洋蔥，可搭配雞肉、豬肉或其他喜愛的配料。",reason:"香料香氣與米飯相互融合，是許多人熟悉又喜愛的日式家常料理。配料也能依照個人喜好自由搭配。",occasion:"午餐、晚餐，或想享用飽足感十足的料理時。"},
+      {name:"新鮮水果優格",category:"輕食",description:"酸甜優格搭配當季水果，輕盈又美味。",price:"NT$ 120",image:"photo-1488477181946-6428a0291777",features:"綿密優格結合水果的自然甜味，呈現清爽的酸甜層次。搭配不同季節的水果，每一碗都能呈現繽紛的色彩。",ingredients:"原味優格、當季水果，可依喜好搭配燕麥、堅果或蜂蜜。",reason:"食材搭配彈性高，可以依照當季水果與個人喜好變化出不同風味，也很適合做成色彩繽紛的早餐。",occasion:"早餐、下午點心，或正餐之間的小點心。"},
+      {name:"手作可麗露",category:"甜點",description:"外層微酥、內裡柔軟，適合午後慢慢品嚐。",price:"NT$ 85",image:"photo-1555507036-ab1f4038808a",features:"外層帶有焦糖香氣，內部柔軟濕潤，呈現法式甜點細緻的口感。小巧的外形與深色焦糖表面，也讓它成為咖啡館裡常見的精緻點心。",ingredients:"牛奶、雞蛋、麵粉、糖、奶油與香草。實際食材依烘焙配方而定。",reason:"焦糖香氣與柔軟內餡形成迷人的口感對比，小巧精緻，適合搭配咖啡或茶點享用。",occasion:"下午茶、咖啡時光，或想享用精緻小甜點的時候。"}
     ];
 
-    /* =========================
-       DOM 與狀態
-    ========================= */
-    const grid = document.getElementById("foodGrid");
-    const search = document.getElementById("search");
-    const buttons = [...document.querySelectorAll(".filter-btn")];
+    const grid=document.getElementById("foodGrid"),search=document.getElementById("search");
+    const buttons=[...document.querySelectorAll(".filter-btn")],minPriceInput=document.getElementById("minPrice"),maxPriceInput=document.getElementById("maxPrice"),sortSelect=document.getElementById("sortSelect");
+    const detailOverlay=document.getElementById("foodDetailOverlay"),closeDetailButton=document.getElementById("closeFoodDetail"),detailFavoriteButton=document.getElementById("detailFavoriteBtn"),detailImage=document.getElementById("detailImage"),toast=document.getElementById("toast");
+    const favoritesNav=document.getElementById("favoritesNav"),exploreNav=document.getElementById("exploreNav"),homeNav=document.getElementById("homeNav"),aboutNav=document.getElementById("aboutNav");
+    const STORAGE_KEY="日日食光_favorites_v1";
+    let currentCategory="全部",currentDetailFood=null,lastFocusedElement=null,toastTimer=null;
 
-    const detailOverlay = document.getElementById("foodDetailOverlay");
-    const detailModal = document.getElementById("foodDetailModal");
-    const closeDetailButton = document.getElementById("closeFoodDetail");
-    const detailFavoriteButton = document.getElementById("detailFavoriteBtn");
-    const detailImage = document.getElementById("detailImage");
-    const toast = document.getElementById("toast");
-
-    const favoritesNav = document.getElementById("favoritesNav");
-    const exploreNav = document.getElementById("exploreNav");
-    const homeNav = document.getElementById("homeNav");
-    const aboutNav = document.getElementById("aboutNav");
-
-    const STORAGE_KEY = "日日食光_favorites_v1";
-
-    let currentCategory = "全部";
-    let currentDetailFood = null;
-    let lastFocusedElement = null;
-    let toastTimer = null;
-
-    /* =========================
-       收藏資料儲存
-       使用料理名稱作為識別值
-    ========================= */
-    function loadFavorites() {
-      try {
-        const saved = JSON.parse(
-          localStorage.getItem(STORAGE_KEY) || "[]"
-        );
-
-        if (!Array.isArray(saved)) return new Set();
-
-        const validNames = new Set(foods.map(food => food.name));
-
-        return new Set(
-          saved.filter(name =>
-            typeof name === "string" && validNames.has(name)
-          )
-        );
-      } catch (error) {
-        return new Set();
-      }
-    }
-
-    let favoriteFoods = loadFavorites();
-
-    function isFavorite(food) {
-      return favoriteFoods.has(food.name);
-    }
-
-    function saveFavorites() {
-      try {
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify([...favoriteFoods])
-        );
-        return true;
-      } catch (error) {
-        return false;
-      }
-    }
-
-    function updateFavoriteCount() {
-      document.getElementById("favoriteCount").textContent =
-        favoriteFoods.size;
-    }
-
-    /* =========================
-       提示訊息
-    ========================= */
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
-
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2200);
-    }
-
-    /* =========================
-       導覽列與分類狀態
-    ========================= */
-    function updateNavigation() {
-      const showingFavorites = currentCategory === "收藏";
-      const showingAll = currentCategory === "全部";
-
-      favoritesNav.classList.toggle("active", showingFavorites);
-      exploreNav.classList.toggle(
-        "active",
-        !showingFavorites && !showingAll
-      );
-    }
-
-    function updateSectionHeading() {
-      const eyebrow = document.getElementById("sectionEyebrow");
-      const title = document.getElementById("sectionTitle");
-      const description = document.getElementById("sectionDescription");
-
-      if (currentCategory === "收藏") {
-        eyebrow.textContent = "MY FAVORITES";
-        title.textContent = "我的收藏";
-        description.textContent =
-          "把喜歡的料理收進清單，隨時回來尋找好味道。";
-      } else {
-        eyebrow.textContent = "TASTE & DISCOVER";
-        title.textContent = "今日美食提案";
-        description.textContent =
-          "每一道料理，都有它值得被記住的理由。";
-      }
-    }
-
-    function setCategory(category) {
-      currentCategory = category;
-
-      buttons.forEach(button => {
-        button.classList.toggle(
-          "active",
-          button.dataset.category === category
-        );
+    function getPrice(food){return Number(String(food.price).replace(/[^\d.]/g,""))||0}
+    function loadFavorites(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");if(!Array.isArray(saved))return new Set();const validNames=new Set(foods.map(food=>food.name));return new Set(saved.filter(name=>typeof name==="string"&&validNames.has(name)))}catch(error){return new Set()}}
+    let favoriteFoods=loadFavorites();
+    function isFavorite(food){return favoriteFoods.has(food.name)}
+    function saveFavorites(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify([...favoriteFoods]));return true}catch(error){return false}}
+    function updateFavoriteCount(){document.getElementById("favoriteCount").textContent=favoriteFoods.size}
+    function showToast(message){toast.textContent=message;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),2200)}
+    function updateNavigation(){const showingFavorites=currentCategory==="收藏",showingAll=currentCategory==="全部";favoritesNav.classList.toggle("active",showingFavorites);exploreNav.classList.toggle("active",!showingFavorites&&!showingAll)}
+    function updateSectionHeading(){const eyebrow=document.getElementById("sectionEyebrow"),title=document.getElementById("sectionTitle"),description=document.getElementById("sectionDescription");if(currentCategory==="收藏"){eyebrow.textContent="MY FAVORITES";title.textContent="我的收藏";description.textContent="把喜歡的料理收進清單，隨時回來尋找好味道。"}else{eyebrow.textContent="TASTE & DISCOVER";title.textContent="今日美食提案";description.textContent="每一道料理，都有它值得被記住的理由。"}}
+    function setCategory(category){currentCategory=category;buttons.forEach(button=>button.classList.toggle("active",button.dataset.category===category));updateNavigation();updateSectionHeading();renderFoods()}
+    function toggleFavorite(food){if(isFavorite(food))favoriteFoods.delete(food.name);else favoriteFoods.add(food.name);const saved=saveFavorites();updateFavoriteCount();renderFoods();if(currentDetailFood&&currentDetailFood.name===food.name)updateDetailFavoriteButton(food);showToast(isFavorite(food)?(saved?`♥ 已將「${food.name}」加入收藏`:"已更新本次收藏，但瀏覽器無法保存紀錄。"):(saved?`已將「${food.name}」從收藏移除`:"已取消本次收藏，但瀏覽器無法保存紀錄。"))}
+    function resetFilters(){search.value="";minPriceInput.value="";maxPriceInput.value="";sortSelect.value="default";setCategory("全部")}
+    function renderEmptyState(){const noFavorites=currentCategory==="收藏"&&favoriteFoods.size===0;grid.innerHTML=noFavorites?`<div class="empty"><span class="empty-icon" aria-hidden="true">♡</span><h3>你的收藏清單還是空的</h3><p>遇到喜歡的料理時，點擊卡片右上角的愛心，就能收藏起來。</p><button type="button" id="emptyExploreButton">探索美食</button></div>`:`<div class="empty"><span class="empty-icon" aria-hidden="true">⌕</span><h3>找不到符合條件的料理</h3><p>試試其他關鍵字、調整價格範圍，或切換料理分類。</p><button type="button" id="emptyResetButton">重設所有篩選</button></div>`;const button=document.getElementById(noFavorites?"emptyExploreButton":"emptyResetButton");button.addEventListener("click",resetFilters)}
+    function renderFoods(){
+      const keyword=search.value.trim().toLocaleLowerCase(),minValue=minPriceInput.value===""?null:Number(minPriceInput.value),maxValue=maxPriceInput.value===""?null:Number(maxPriceInput.value);
+      let result=foods.filter(food=>{
+        const matchCategory=currentCategory==="全部"||(currentCategory==="收藏"?isFavorite(food):food.category===currentCategory);
+        const searchableText=[food.name,food.category,food.description,food.features,food.ingredients,food.reason,food.occasion,food.price].join(" ").toLocaleLowerCase();
+        const matchKeyword=!keyword||searchableText.includes(keyword),price=getPrice(food);
+        const matchMin=minValue===null||!Number.isFinite(minValue)||price>=minValue,matchMax=maxValue===null||!Number.isFinite(maxValue)||price<=maxValue;
+        return matchCategory&&matchKeyword&&matchMin&&matchMax;
       });
-
-      updateNavigation();
-      updateSectionHeading();
-      renderFoods();
+      if(sortSelect.value==="price-asc")result.sort((a,b)=>getPrice(a)-getPrice(b));
+      else if(sortSelect.value==="price-desc")result.sort((a,b)=>getPrice(b)-getPrice(a));
+      else if(sortSelect.value==="name-asc")result.sort((a,b)=>a.name.localeCompare(b.name,"zh-Hant"));
+      const summaryParts=[`共找到 ${result.length} 道料理`];
+      if(currentCategory!=="全部")summaryParts.push(currentCategory==="收藏"?"分類：我的收藏":`分類：${currentCategory}`);
+      if(minPriceInput.value!==""||maxPriceInput.value!=="")summaryParts.push(`價格：${minPriceInput.value===""?"不限":`$${minPriceInput.value}`}～${maxPriceInput.value===""?"不限":`$${maxPriceInput.value}`}`);
+      if(keyword)summaryParts.push(`關鍵字：「${search.value.trim()}」`);
+      document.getElementById("resultSummary").textContent=summaryParts.join("　｜　");
+      if(result.length===0){renderEmptyState();return}
+      grid.innerHTML=result.map(food=>{const saved=isFavorite(food);return `<article class="food-card" tabindex="0" role="button" aria-label="查看${food.name}的詳細介紹" data-food-name="${food.name}">
+        <button type="button" class="favorite-btn ${saved?"is-favorite":""}" data-favorite-name="${food.name}" aria-label="${saved?"取消收藏":"加入收藏"}：${food.name}" aria-pressed="${saved}">${saved?"♥":"♡"}</button>
+        <img src="https://images.unsplash.com/${food.image}?auto=format&fit=crop&w=700&q=80" alt="${food.name}" loading="lazy" onerror="this.style.display='none'">
+        <div class="food-info"><span class="tag">${food.category}</span><h3>${food.name}</h3><p>${food.description}</p><span class="price">${food.price}</span><span class="card-hint">查看詳細介紹 →</span></div></article>`}).join("");
     }
-
-    /* =========================
-       收藏或取消收藏
-    ========================= */
-    function toggleFavorite(food) {
-      if (isFavorite(food)) {
-        favoriteFoods.delete(food.name);
-      } else {
-        favoriteFoods.add(food.name);
-      }
-
-      const saved = saveFavorites();
-
-      updateFavoriteCount();
-      renderFoods();
-
-      if (currentDetailFood &&
-          currentDetailFood.name === food.name) {
-        updateDetailFavoriteButton(food);
-      }
-
-      if (isFavorite(food)) {
-        showToast(saved
-          ? `♥ 已將「${food.name}」加入收藏`
-          : "已更新本次收藏，但瀏覽器無法保存紀錄。");
-      } else {
-        showToast(saved
-          ? `已將「${food.name}」從收藏移除`
-          : "已取消本次收藏，但瀏覽器無法保存紀錄。");
-      }
-    }
-
-    /* =========================
-       空白結果畫面
-    ========================= */
-    function renderEmptyState(keyword) {
-      if (currentCategory === "收藏" && favoriteFoods.size === 0) {
-        grid.innerHTML = `
-          <div class="empty">
-            <span class="empty-icon" aria-hidden="true">♡</span>
-            <h3>你的收藏清單還是空的</h3>
-            <p>遇到喜歡的料理時，點擊卡片右上角的愛心，就能收藏起來。</p>
-            <button type="button" id="emptyExploreButton">探索美食</button>
-          </div>
-        `;
-
-        document.getElementById("emptyExploreButton")
-          .addEventListener("click", () => {
-            search.value = "";
-            setCategory("全部");
-          });
-
-        return;
-      }
-
-      grid.innerHTML = `
-        <div class="empty">
-          <span class="empty-icon" aria-hidden="true">⌕</span>
-          <h3>找不到符合條件的料理</h3>
-          <p>試試其他關鍵字，或切換料理分類。</p>
-          <button type="button" id="emptyResetButton">查看全部料理</button>
-        </div>
-      `;
-
-      document.getElementById("emptyResetButton")
-        .addEventListener("click", () => {
-          search.value = "";
-          setCategory("全部");
-        });
-    }
-
-    /* =========================
-       渲染美食卡片
-    ========================= */
-    function renderFoods() {
-      const keyword = search.value.trim().toLowerCase();
-
-      const result = foods.filter(food => {
-        const matchCategory =
-          currentCategory === "全部" ||
-          (currentCategory === "收藏"
-            ? isFavorite(food)
-            : food.category === currentCategory);
-
-        const searchableText = [
-          food.name,
-          food.category,
-          food.description,
-          food.features,
-          food.ingredients,
-          food.reason,
-          food.occasion
-        ].join(" ").toLowerCase();
-
-        return matchCategory && searchableText.includes(keyword);
-      });
-
-      document.getElementById("resultSummary").textContent =
-        `共找到 ${result.length} 道料理`;
-
-      if (result.length === 0) {
-        renderEmptyState(keyword);
-        return;
-      }
-
-      grid.innerHTML = result.map(food => {
-        const saved = isFavorite(food);
-
-        return `
-          <article class="food-card"
-                   tabindex="0"
-                   role="button"
-                   aria-label="查看${food.name}的詳細介紹"
-                   data-food-name="${food.name}">
-
-            <button
-              type="button"
-              class="favorite-btn ${saved ? "is-favorite" : ""}"
-              data-favorite-name="${food.name}"
-              aria-label="${saved ? "取消收藏" : "加入收藏"}：${food.name}"
-              aria-pressed="${saved}">
-              ${saved ? "♥" : "♡"}
-            </button>
-
-            <img
-              src="https://images.unsplash.com/${food.image}?auto=format&fit=crop&w=700&q=80"
-              alt="${food.name}"
-              loading="lazy"
-              onerror="this.style.display='none'">
-
-            <div class="food-info">
-              <span class="tag">${food.category}</span>
-              <h3>${food.name}</h3>
-              <p>${food.description}</p>
-              <span class="price">${food.price}</span>
-              <span class="card-hint">查看詳細介紹 →</span>
-            </div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    /* =========================
-       詳細介紹頁收藏狀態
-    ========================= */
-    function updateDetailFavoriteButton(food) {
-      const saved = isFavorite(food);
-
-      detailFavoriteButton.classList.toggle("is-favorite", saved);
-      detailFavoriteButton.setAttribute("aria-pressed", String(saved));
-
-      document.getElementById("detailFavoriteIcon").textContent =
-        saved ? "♥" : "♡";
-
-      document.getElementById("detailFavoriteText").textContent =
-        saved ? "已收藏・點擊取消" : "加入我的收藏";
-    }
-
-    /* =========================
-       開啟料理詳細介紹
-    ========================= */
-    function openFoodDetail(food, sourceElement) {
-      lastFocusedElement = sourceElement;
-      currentDetailFood = food;
-
-      document.getElementById("detailCategory").textContent = food.category;
-      document.getElementById("detailName").textContent = food.name;
-      document.getElementById("detailDescription").textContent = food.description;
-      document.getElementById("detailPrice").textContent = food.price;
-      document.getElementById("detailFeatures").textContent = food.features;
-      document.getElementById("detailIngredients").textContent = food.ingredients;
-      document.getElementById("detailReason").textContent = food.reason;
-      document.getElementById("detailOccasion").textContent = food.occasion;
-
-      detailImage.src =
-        `https://images.unsplash.com/${food.image}?auto=format&fit=crop&w=1000&q=85`;
-      detailImage.alt = food.name;
-
-      updateDetailFavoriteButton(food);
-
-      detailOverlay.classList.add("show");
-      detailOverlay.setAttribute("aria-hidden", "false");
-      document.body.classList.add("modal-open");
-
-      closeDetailButton.focus();
-    }
-
-    /* =========================
-       關閉料理詳細介紹
-    ========================= */
-    function closeFoodDetail() {
-      if (!detailOverlay.classList.contains("show")) return;
-
-      detailOverlay.classList.remove("show");
-      detailOverlay.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("modal-open");
-
-      if (lastFocusedElement &&
-          document.contains(lastFocusedElement) &&
-          typeof lastFocusedElement.focus === "function") {
-        lastFocusedElement.focus();
-      }
-
-      currentDetailFood = null;
-    }
-
-    /* =========================
-       卡片點擊事件
-       愛心與卡片介紹分開處理
-    ========================= */
-    grid.addEventListener("click", event => {
-      const favoriteButton = event.target.closest(".favorite-btn");
-
-      if (favoriteButton) {
-        event.stopPropagation();
-
-        const food = foods.find(
-          item => item.name === favoriteButton.dataset.favoriteName
-        );
-
-        if (food) toggleFavorite(food);
-        return;
-      }
-
-      const card = event.target.closest(".food-card");
-      if (!card) return;
-
-      const food = foods.find(
-        item => item.name === card.dataset.foodName
-      );
-
-      if (food) openFoodDetail(food, card);
-    });
-
-    grid.addEventListener("keydown", event => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-
-      const card = event.target.closest(".food-card");
-
-      if (!card || event.target !== card) return;
-
-      event.preventDefault();
-
-      const food = foods.find(
-        item => item.name === card.dataset.foodName
-      );
-
-      if (food) openFoodDetail(food, card);
-    });
-
-    /* =========================
-       詳細介紹頁收藏
-    ========================= */
-    detailFavoriteButton.addEventListener("click", () => {
-      if (currentDetailFood) {
-        toggleFavorite(currentDetailFood);
-      }
-    });
-
-    /* =========================
-       分類篩選
-    ========================= */
-    buttons.forEach(button => {
-      button.addEventListener("click", () => {
-        setCategory(button.dataset.category);
-      });
-    });
-
-    /* =========================
-       搜尋料理
-    ========================= */
-    search.addEventListener("input", renderFoods);
-
-    /* =========================
-       導覽列
-    ========================= */
-    favoritesNav.addEventListener("click", () => {
-      setCategory("收藏");
-    });
-
-    exploreNav.addEventListener("click", () => {
-      setCategory("全部");
-    });
-
-    document.getElementById("heroExplore").addEventListener("click", () => {
-      setCategory("全部");
-    });
-
-    homeNav.addEventListener("click", () => {
-      search.value = "";
-      setCategory("全部");
-    });
-
-    aboutNav.addEventListener("click", () => {
-      updateNavigation();
-    });
-
-    /* =========================
-       關閉按鈕與背景點擊
-    ========================= */
-    closeDetailButton.addEventListener("click", closeFoodDetail);
-
-    detailOverlay.addEventListener("click", event => {
-      if (event.target === detailOverlay) {
-        closeFoodDetail();
-      }
-    });
-
-    /* =========================
-       Escape 關閉與 Tab 焦點限制
-    ========================= */
-    detailOverlay.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeFoodDetail();
-        return;
-      }
-
-      if (event.key !== "Tab") return;
-
-      const focusable = [
-        closeDetailButton,
-        detailFavoriteButton
-      ];
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    });
-
-    /* =========================
-       初次載入
-    ========================= */
-    updateFavoriteCount();
-    updateNavigation();
-    updateSectionHeading();
-    renderFoods();
+    function updateDetailFavoriteButton(food){const saved=isFavorite(food);detailFavoriteButton.classList.toggle("is-favorite",saved);detailFavoriteButton.setAttribute("aria-pressed",String(saved));document.getElementById("detailFavoriteIcon").textContent=saved?"♥":"♡";document.getElementById("detailFavoriteText").textContent=saved?"已收藏・點擊取消":"加入我的收藏"}
+    function openFoodDetail(food,sourceElement){lastFocusedElement=sourceElement;currentDetailFood=food;document.getElementById("detailCategory").textContent=food.category;document.getElementById("detailName").textContent=food.name;document.getElementById("detailDescription").textContent=food.description;document.getElementById("detailPrice").textContent=food.price;document.getElementById("detailFeatures").textContent=food.features;document.getElementById("detailIngredients").textContent=food.ingredients;document.getElementById("detailReason").textContent=food.reason;document.getElementById("detailOccasion").textContent=food.occasion;detailImage.src=`https://images.unsplash.com/${food.image}?auto=format&fit=crop&w=1000&q=85`;detailImage.alt=food.name;updateDetailFavoriteButton(food);detailOverlay.classList.add("show");detailOverlay.setAttribute("aria-hidden","false");document.body.classList.add("modal-open");closeDetailButton.focus()}
+    function closeFoodDetail(){if(!detailOverlay.classList.contains("show"))return;detailOverlay.classList.remove("show");detailOverlay.setAttribute("aria-hidden","true");document.body.classList.remove("modal-open");if(lastFocusedElement&&document.contains(lastFocusedElement)&&typeof lastFocusedElement.focus==="function")lastFocusedElement.focus();currentDetailFood=null}
+
+    grid.addEventListener("click",event=>{const favoriteButton=event.target.closest(".favorite-btn");if(favoriteButton){event.stopPropagation();const food=foods.find(item=>item.name===favoriteButton.dataset.favoriteName);if(food)toggleFavorite(food);return}const card=event.target.closest(".food-card");if(!card)return;const food=foods.find(item=>item.name===card.dataset.foodName);if(food)openFoodDetail(food,card)});
+    grid.addEventListener("keydown",event=>{if(event.key!=="Enter"&&event.key!==" ")return;const card=event.target.closest(".food-card");if(!card||event.target!==card)return;event.preventDefault();const food=foods.find(item=>item.name===card.dataset.foodName);if(food)openFoodDetail(food,card)});
+    detailFavoriteButton.addEventListener("click",()=>{if(currentDetailFood)toggleFavorite(currentDetailFood)});
+    buttons.forEach(button=>button.addEventListener("click",()=>setCategory(button.dataset.category)));
+    search.addEventListener("input",renderFoods);minPriceInput.addEventListener("input",renderFoods);maxPriceInput.addEventListener("input",renderFoods);sortSelect.addEventListener("change",renderFoods);document.getElementById("resetFilters").addEventListener("click",resetFilters);
+    favoritesNav.addEventListener("click",()=>setCategory("收藏"));exploreNav.addEventListener("click",()=>setCategory("全部"));document.getElementById("heroExplore").addEventListener("click",()=>setCategory("全部"));homeNav.addEventListener("click",()=>{resetFilters()});aboutNav.addEventListener("click",updateNavigation);
+    closeDetailButton.addEventListener("click",closeFoodDetail);detailOverlay.addEventListener("click",event=>{if(event.target===detailOverlay)closeFoodDetail()});
+    detailOverlay.addEventListener("keydown",event=>{if(event.key==="Escape"){event.preventDefault();closeFoodDetail();return}if(event.key!=="Tab")return;const focusable=[closeDetailButton,detailFavoriteButton],first=focusable[0],last=focusable[focusable.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}});
+    // 價格上下限若輸入相反，仍保留使用者輸入並顯示零筆結果，方便直接看出範圍不符。
+    updateFavoriteCount();updateNavigation();updateSectionHeading();renderFoods();
   </script>
 </body>
 </html>
-```
