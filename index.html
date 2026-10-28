@@ -29,9 +29,12 @@
       margin: 0;
       background: var(--cream);
       color: var(--text);
-      font-family: "Noto Sans TC", "Microsoft JhengHei",
-                   sans-serif;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       line-height: 1.8;
+    }
+
+    body.modal-open {
+      overflow: hidden;
     }
 
     a {
@@ -43,12 +46,22 @@
       font: inherit;
     }
 
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    .food-card:focus-visible {
+      outline: 3px solid var(--green);
+      outline-offset: 4px;
+    }
+
+    /* 導覽列 */
     .navbar {
-      height: 76px;
+      min-height: 76px;
       padding: 0 8%;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 20px;
       background: rgba(250, 248, 242, 0.96);
       border-bottom: 1px solid #eae8df;
     }
@@ -58,10 +71,12 @@
       font-size: 24px;
       font-weight: 800;
       letter-spacing: 2px;
+      white-space: nowrap;
     }
 
     .nav-links {
       display: flex;
+      flex-wrap: wrap;
       gap: 30px;
       font-size: 14px;
     }
@@ -70,6 +85,7 @@
       color: var(--green);
     }
 
+    /* 首頁主視覺 */
     .hero {
       min-height: 470px;
       padding: 70px 8%;
@@ -126,6 +142,7 @@
       border-radius: 48% 48% 12px 12px;
     }
 
+    /* 美食探索區 */
     .section {
       max-width: 1180px;
       margin: auto;
@@ -170,6 +187,7 @@
       border-radius: 24px;
       padding: 7px 18px;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     .filter-btn.active,
@@ -200,6 +218,7 @@
       background: white;
       border: 1px solid #eeece4;
       border-radius: 14px;
+      cursor: pointer;
       transition: transform 0.25s, box-shadow 0.25s;
     }
 
@@ -248,6 +267,13 @@
       font-weight: 700;
     }
 
+    .card-hint {
+      display: block;
+      margin-top: 10px;
+      color: var(--green);
+      font-size: 12px;
+    }
+
     .empty {
       grid-column: 1 / -1;
       text-align: center;
@@ -255,6 +281,130 @@
       color: var(--muted);
     }
 
+    /* 美食詳細介紹視窗 */
+    .food-detail-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(35, 45, 35, 0.58);
+      backdrop-filter: blur(5px);
+    }
+
+    .food-detail-overlay.show {
+      display: flex;
+    }
+
+    .food-detail-modal {
+      position: relative;
+      width: min(760px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--cream);
+      border-radius: 20px;
+      box-shadow: 0 20px 70px #00000025;
+      animation: detailFadeIn 0.25s ease;
+    }
+
+    .food-detail-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 50%;
+      background: white;
+      color: var(--deep-green);
+      font-size: 27px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #00000015;
+    }
+
+    .food-detail-close:hover {
+      background: var(--light-green);
+    }
+
+    .food-detail-image {
+      display: block;
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      background: var(--light-green);
+    }
+
+    .food-detail-content {
+      padding: 28px 34px 34px;
+    }
+
+    .food-detail-content h2 {
+      margin: 12px 0 8px;
+      color: var(--deep-green);
+      font-size: 30px;
+      line-height: 1.5;
+    }
+
+    .food-detail-description {
+      margin: 0;
+      color: #687267;
+      line-height: 2;
+      overflow-wrap: anywhere;
+    }
+
+    .food-detail-price {
+      display: block;
+      margin: 16px 0 24px;
+      color: var(--green);
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .detail-divider {
+      height: 1px;
+      margin: 22px 0;
+      background: #e8e7dd;
+    }
+
+    .food-detail-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 7px;
+      color: var(--deep-green);
+      font-size: 18px;
+    }
+
+    .food-detail-subtitle::before {
+      content: "";
+      width: 4px;
+      height: 20px;
+      flex-shrink: 0;
+      border-radius: 4px;
+      background: #91a68a;
+    }
+
+    .detail-section {
+      margin-top: 22px;
+    }
+
+    .detail-note {
+      margin-top: 26px;
+      padding: 14px 17px;
+      border-radius: 10px;
+      background: var(--light-green);
+      color: var(--deep-green);
+      font-size: 13px;
+    }
+
+    /* 關於我們 */
     .about {
       padding: 65px 25px;
       text-align: center;
@@ -279,6 +429,18 @@
       font-size: 13px;
     }
 
+    @keyframes detailFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 平板與手機版 */
     @media (max-width: 760px) {
       .navbar {
         height: auto;
@@ -337,6 +499,14 @@
       .search-box {
         width: 100%;
       }
+
+      .food-detail-image {
+        height: 250px;
+      }
+
+      .food-detail-content {
+        padding: 24px;
+      }
     }
 
     @media (max-width: 420px) {
@@ -347,14 +517,43 @@
       .food-card img {
         height: 220px;
       }
+
+      .food-detail-overlay {
+        padding: 10px;
+      }
+
+      .food-detail-modal {
+        max-height: 94vh;
+        border-radius: 15px;
+      }
+
+      .food-detail-image {
+        height: 210px;
+      }
+
+      .food-detail-content {
+        padding: 20px;
+      }
+
+      .food-detail-content h2 {
+        font-size: 25px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 
 <body>
   <header class="navbar">
-    <a class="logo" href="#">日日食光.</a>
-    <nav class="nav-links">
+    <a class="logo" href="#" aria-label="日日食光首頁">日日食光.</a>
+    <nav class="nav-links" aria-label="主要導覽">
       <a href="#">首頁</a>
       <a href="#foods">美食探索</a>
       <a href="#about">關於我們</a>
@@ -387,18 +586,19 @@
       </div>
 
       <div class="toolbar">
-        <div class="filters">
-          <button class="filter-btn active" data-category="全部">全部</button>
-          <button class="filter-btn" data-category="主食">暖心主食</button>
-          <button class="filter-btn" data-category="輕食">清爽輕食</button>
-          <button class="filter-btn" data-category="甜點">療癒甜點</button>
+        <div class="filters" aria-label="料理分類">
+          <button type="button" class="filter-btn active" data-category="全部">全部</button>
+          <button type="button" class="filter-btn" data-category="主食">暖心主食</button>
+          <button type="button" class="filter-btn" data-category="輕食">清爽輕食</button>
+          <button type="button" class="filter-btn" data-category="甜點">療癒甜點</button>
         </div>
 
         <input class="search-box" id="search"
-          type="search" placeholder="搜尋料理名稱...">
+          type="search" aria-label="搜尋料理"
+          placeholder="搜尋料理名稱...">
       </div>
 
-      <div class="food-grid" id="foodGrid"></div>
+      <div class="food-grid" id="foodGrid" aria-live="polite"></div>
     </section>
 
     <section class="about" id="about">
@@ -416,49 +616,123 @@
     日日食光 © 2026 ｜ 用一頓好飯，收藏生活的美好
   </footer>
 
+  <!-- 美食詳細介紹視窗 -->
+  <div class="food-detail-overlay" id="foodDetailOverlay"
+       role="dialog" aria-modal="true"
+       aria-labelledby="detailName"
+       aria-hidden="true">
+    <article class="food-detail-modal">
+      <button type="button" class="food-detail-close"
+              id="closeFoodDetail"
+              aria-label="關閉詳細介紹">×</button>
+
+      <img class="food-detail-image"
+           id="detailImage" src="" alt="">
+
+      <div class="food-detail-content">
+        <span class="tag" id="detailCategory"></span>
+        <h2 id="detailName">料理名稱</h2>
+        <p class="food-detail-description" id="detailDescription"></p>
+
+        <span class="food-detail-price" id="detailPrice"></span>
+
+        <div class="detail-divider"></div>
+
+        <section class="detail-section">
+          <h3 class="food-detail-subtitle">料理特色</h3>
+          <p class="food-detail-description" id="detailFeatures"></p>
+        </section>
+
+        <section class="detail-section">
+          <h3 class="food-detail-subtitle">主要食材</h3>
+          <p class="food-detail-description" id="detailIngredients"></p>
+        </section>
+
+        <section class="detail-section">
+          <h3 class="food-detail-subtitle">推薦理由</h3>
+          <p class="food-detail-description" id="detailReason"></p>
+        </section>
+
+        <section class="detail-section">
+          <h3 class="food-detail-subtitle">適合的用餐時段</h3>
+          <p class="food-detail-description" id="detailOccasion"></p>
+        </section>
+
+        <div class="detail-note">
+          一道好料理，讓平凡的日常也值得期待。
+        </div>
+      </div>
+    </article>
+  </div>
+
   <script>
+    /* 料理資料：可在此修改介紹與價格 */
     const foods = [
       {
         name: "日式豚骨拉麵",
         category: "主食",
         description: "濃郁湯頭搭配彈牙麵條，暖心又滿足。",
         price: "NT$ 220",
-        image: "photo-1569718212165-3a8278d5f624"
+        image: "photo-1569718212165-3a8278d5f624",
+        features: "湯頭香醇濃厚，搭配滑順麵條、叉燒與蔥花，呈現經典日式拉麵風味。湯頭的醇厚香氣與配料相互融合，每一口都帶來豐富的味覺體驗。",
+        ingredients: "豚骨湯頭、拉麵、叉燒、蔥花、木耳與溏心蛋。實際配料會依店家做法有所不同。",
+        reason: "適合喜歡濃郁湯頭與豐富配料的人。熱騰騰的湯麵搭配多種配料，讓一頓飯兼具香氣、口感與飽足感。",
+        occasion: "午餐、晚餐，或想好好享用一頓熱食的時候。"
       },
       {
         name: "酪梨鮮蔬沙拉",
         category: "輕食",
         description: "新鮮蔬菜與綿密酪梨，清爽無負擔。",
         price: "NT$ 180",
-        image: "photo-1512621776951-a57141f2eefd"
+        image: "photo-1512621776951-a57141f2eefd",
+        features: "多種蔬菜呈現自然色彩，搭配柔滑酪梨與清爽醬汁，口感豐富。酪梨的綿密與蔬菜的爽脆形成有趣的層次。",
+        ingredients: "酪梨、生菜、小番茄、小黃瓜與沙拉醬，也可以依喜好加入堅果或其他蔬菜。",
+        reason: "蔬菜色彩繽紛、口感層次多，適合喜歡清新蔬食風味的人。可以依照當季食材搭配，呈現不同的色彩與滋味。",
+        occasion: "午餐、早午餐，或想享用清爽餐點的時候。"
       },
       {
         name: "草莓奶油蛋糕",
         category: "甜點",
         description: "柔軟蛋糕與酸甜草莓的經典組合。",
         price: "NT$ 150",
-        image: "photo-1578985545062-69928b1d9587"
+        image: "photo-1578985545062-69928b1d9587",
+        features: "柔軟蛋糕體搭配滑順奶油與草莓果香，呈現甜美細緻的口感。草莓的自然果香與奶油香氣相互襯托，帶來經典的甜點風味。",
+        ingredients: "蛋糕體、鮮奶油、草莓、雞蛋與麵粉。實際食材依各店家的配方而定。",
+        reason: "草莓的清新果香搭配奶油香氣，外觀也相當精緻，適合喜歡經典水果甜點的人。",
+        occasion: "下午茶、生日慶祝、聚會分享，或飯後甜點。"
       },
       {
         name: "日式咖哩飯",
         category: "主食",
         description: "香醇咖哩與豐富配料，簡單卻迷人。",
         price: "NT$ 190",
-        image: "photo-1586190848861-99aa4a171e90"
+        image: "photo-1586190848861-99aa4a171e90",
+        features: "香料與醬汁的香氣包覆米飯，搭配燉煮入味的蔬菜與主食配料，呈現溫暖的日式家常風味。",
+        ingredients: "白飯、咖哩醬、馬鈴薯、紅蘿蔔與洋蔥，可搭配雞肉、豬肉或其他喜愛的配料。",
+        reason: "香料香氣與米飯相互融合，是許多人熟悉又喜愛的日式家常料理。配料也能依照個人喜好自由搭配。",
+        occasion: "午餐、晚餐，或想享用飽足感十足的料理時。"
       },
       {
         name: "新鮮水果優格",
         category: "輕食",
         description: "酸甜優格搭配當季水果，輕盈又美味。",
         price: "NT$ 120",
-        image: "photo-1488477181946-6428a0291777"
+        image: "photo-1488477181946-6428a0291777",
+        features: "綿密優格結合水果的自然甜味，呈現清爽的酸甜層次。搭配不同季節的水果，每一碗都能呈現繽紛的色彩。",
+        ingredients: "原味優格、當季水果，可依喜好搭配燕麥、堅果或蜂蜜。",
+        reason: "食材搭配彈性高，可以依照當季水果與個人喜好變化出不同風味，也很適合做成色彩繽紛的早餐。",
+        occasion: "早餐、下午點心，或正餐之間的小點心。"
       },
       {
         name: "手作可麗露",
         category: "甜點",
         description: "外層微酥、內裡柔軟，適合午後慢慢品嚐。",
         price: "NT$ 85",
-        image: "photo-1555507036-ab1f4038808a"
+        image: "photo-1555507036-ab1f4038808a",
+        features: "外層帶有焦糖香氣，內部柔軟濕潤，呈現法式甜點細緻的口感。小巧的外形與深色焦糖表面，也讓它成為咖啡館裡常見的精緻點心。",
+        ingredients: "牛奶、雞蛋、麵粉、糖、奶油與香草。實際食材依烘焙配方而定。",
+        reason: "焦糖香氣與柔軟內餡形成迷人的口感對比，小巧精緻，適合搭配咖啡或茶點享用。",
+        occasion: "下午茶、咖啡時光，或想享用精緻小甜點的時候。"
       }
     ];
 
@@ -466,8 +740,14 @@
     const search = document.getElementById("search");
     const buttons = document.querySelectorAll(".filter-btn");
 
-    let currentCategory = "全部";
+    const detailOverlay = document.getElementById("foodDetailOverlay");
+    const closeDetailButton = document.getElementById("closeFoodDetail");
+    const detailImage = document.getElementById("detailImage");
 
+    let currentCategory = "全部";
+    let lastFocusedCard = null;
+
+    /* 顯示符合搜尋與分類條件的料理 */
     function renderFoods() {
       const keyword = search.value.trim().toLowerCase();
 
@@ -476,9 +756,15 @@
           currentCategory === "全部" ||
           food.category === currentCategory;
 
-        const matchKeyword =
-          food.name.toLowerCase().includes(keyword) ||
-          food.description.toLowerCase().includes(keyword);
+        const searchableText = [
+          food.name,
+          food.category,
+          food.description,
+          food.features,
+          food.ingredients
+        ].join(" ").toLowerCase();
+
+        const matchKeyword = searchableText.includes(keyword);
 
         return matchCategory && matchKeyword;
       });
@@ -490,7 +776,11 @@
       }
 
       grid.innerHTML = result.map(food => `
-        <article class="food-card">
+        <article class="food-card"
+                 tabindex="0"
+                 role="button"
+                 aria-label="查看${food.name}的詳細介紹"
+                 data-food-name="${food.name}">
           <img
             src="https://images.unsplash.com/${food.image}?auto=format&fit=crop&w=700&q=80"
             alt="${food.name}"
@@ -501,11 +791,76 @@
             <h3>${food.name}</h3>
             <p>${food.description}</p>
             <span class="price">${food.price}</span>
+            <span class="card-hint">查看詳細介紹 →</span>
           </div>
         </article>
       `).join("");
     }
 
+    /* 開啟料理詳細介紹 */
+    function openFoodDetail(food, card) {
+      lastFocusedCard = card;
+
+      document.getElementById("detailCategory").textContent = food.category;
+      document.getElementById("detailName").textContent = food.name;
+      document.getElementById("detailDescription").textContent = food.description;
+      document.getElementById("detailPrice").textContent = food.price;
+      document.getElementById("detailFeatures").textContent = food.features;
+      document.getElementById("detailIngredients").textContent = food.ingredients;
+      document.getElementById("detailReason").textContent = food.reason;
+      document.getElementById("detailOccasion").textContent = food.occasion;
+
+      detailImage.src =
+        `https://images.unsplash.com/${food.image}?auto=format&fit=crop&w=1000&q=85`;
+      detailImage.alt = food.name;
+
+      detailOverlay.classList.add("show");
+      detailOverlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+
+      closeDetailButton.focus();
+    }
+
+    /* 關閉料理詳細介紹 */
+    function closeFoodDetail() {
+      if (!detailOverlay.classList.contains("show")) return;
+
+      detailOverlay.classList.remove("show");
+      detailOverlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+
+      if (lastFocusedCard && document.contains(lastFocusedCard)) {
+        lastFocusedCard.focus();
+      }
+    }
+
+    /* 使用事件委派，讓重新篩選後的卡片也能正常運作 */
+    function handleCardActivation(event) {
+      const card = event.target.closest(".food-card");
+      if (!card) return;
+
+      const food = foods.find(
+        item => item.name === card.dataset.foodName
+      );
+
+      if (food) {
+        openFoodDetail(food, card);
+      }
+    }
+
+    grid.addEventListener("click", handleCardActivation);
+
+    grid.addEventListener("keydown", event => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      const card = event.target.closest(".food-card");
+      if (!card) return;
+
+      event.preventDefault();
+      handleCardActivation(event);
+    });
+
+    /* 分類篩選 */
     buttons.forEach(button => {
       button.addEventListener("click", () => {
         currentCategory = button.dataset.category;
@@ -518,8 +873,49 @@
       });
     });
 
+    /* 搜尋料理 */
     search.addEventListener("input", renderFoods);
 
+    /* 關閉按鈕 */
+    closeDetailButton.addEventListener("click", closeFoodDetail);
+
+    /* 點擊視窗外部關閉 */
+    detailOverlay.addEventListener("click", event => {
+      if (event.target === detailOverlay) {
+        closeFoodDetail();
+      }
+    });
+
+    /* Escape 關閉，Tab 焦點限制在介紹視窗內 */
+    detailOverlay.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeFoodDetail();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusable = [
+        closeDetailButton,
+        detailImage
+      ].filter(element =>
+        element.tabIndex >= 0 &&
+        !element.hasAttribute("disabled")
+      );
+
+      if (event.shiftKey &&
+          document.activeElement === focusable[0]) {
+        event.preventDefault();
+        closeDetailButton.focus();
+      } else if (!event.shiftKey &&
+                 document.activeElement === closeDetailButton) {
+        event.preventDefault();
+        detailImage.focus();
+      }
+    });
+
+    /* 初次載入 */
     renderFoods();
   </script>
 </body>
