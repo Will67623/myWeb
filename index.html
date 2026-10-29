@@ -27,6 +27,14 @@
     .food-detail-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(35,45,35,.58);backdrop-filter:blur(5px)}.food-detail-overlay.show{display:flex}.food-detail-modal{position:relative;width:min(760px,100%);max-height:90vh;overflow-y:auto;background:var(--cream);border-radius:20px;box-shadow:0 20px 70px #00000025;animation:detailFadeIn .25s ease}
     .food-detail-close{position:absolute;top:14px;right:14px;z-index:4;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:white;color:var(--deep-green);font-size:27px;line-height:1;cursor:pointer;box-shadow:0 2px 12px #00000015}.food-detail-close:hover{background:var(--light-green)}.food-detail-image{display:block;width:100%;height:320px;object-fit:cover;background:var(--light-green)}.food-detail-content{padding:28px 34px 34px}.food-detail-content h2{margin:12px 0 8px;color:var(--deep-green);font-size:30px;line-height:1.5}.food-detail-description{margin:0;color:#687267;line-height:2;overflow-wrap:anywhere}.food-detail-price{display:block;margin:16px 0 14px;color:var(--green);font-size:23px;font-weight:700}
     .detail-favorite-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 18px;border:1px solid #dfe4d9;border-radius:24px;background:white;color:var(--green);cursor:pointer;transition:background .2s,color .2s}.detail-favorite-btn:hover{background:var(--light-green)}.detail-favorite-btn.is-favorite{color:var(--heart);border-color:#e9c9ca;background:#fff5f4}.detail-favorite-icon{font-size:21px;line-height:1}.detail-divider{height:1px;margin:22px 0;background:#e8e7dd}.food-detail-subtitle{display:flex;align-items:center;gap:9px;margin:0 0 7px;color:var(--deep-green);font-size:18px}.food-detail-subtitle:before{content:"";width:4px;height:20px;flex-shrink:0;border-radius:4px;background:#91a68a}.detail-section{margin-top:22px}.detail-note{margin-top:26px;padding:14px 17px;border-radius:10px;background:var(--light-green);color:var(--deep-green);font-size:13px}
+
+    .food-picker{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;margin:0 0 32px;padding:24px;background:#fff;border:1px solid #e7e9df;border-radius:18px}
+    .food-picker h3{margin:5px 0;color:var(--deep-green);font-size:25px}.food-picker-copy p{color:var(--muted);font-size:14px}
+    .picker-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.picker-secondary{padding:10px 22px;border:1px solid #dfe4d9;border-radius:25px;background:white;color:var(--deep-green);cursor:pointer}.picker-secondary:hover{background:var(--light-green)}.picker-secondary:disabled{opacity:.5;cursor:not-allowed}
+    .picked-food{min-height:145px;display:grid;grid-template-columns:125px 1fr;gap:15px;align-items:center;padding:12px;border-radius:13px;background:var(--light-green)}.picked-food img{width:125px;height:125px;object-fit:cover;border-radius:10px}.picked-food h4{margin:5px 0;color:var(--deep-green);font-size:19px}.picked-food p{margin:3px 0;color:#687267;font-size:14px}.picked-detail-link{padding:0;border:0;background:none;color:var(--green);text-decoration:underline;cursor:pointer}.picker-placeholder{grid-column:1/-1;text-align:center;color:var(--muted)}
+    @media(max-width:760px){.food-picker{grid-template-columns:1fr}.picked-food{grid-template-columns:100px 1fr}.picked-food img{width:100px;height:100px}}
+    @media(max-width:480px){.picked-food{grid-template-columns:85px 1fr}.picked-food img{width:85px;height:85px}}
+
     .about{padding:65px 25px;text-align:center;background:var(--light-green)}.about h2{color:var(--deep-green)}.about p{max-width:600px;margin:12px auto;color:#687267}footer{padding:26px;text-align:center;background:var(--deep-green);color:#e8eee5;font-size:13px}
     @keyframes detailFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
     @media(max-width:950px){.search-filter-row{grid-template-columns:repeat(2,minmax(0,1fr))}.search-group{grid-column:1/-1}.reset-btn{width:100%}}
@@ -54,6 +62,11 @@
     </section>
     <section class="section" id="foods">
       <div class="section-heading"><span class="eyebrow" id="sectionEyebrow">TASTE & DISCOVER</span><h2 id="sectionTitle">今日美食提案</h2><p id="sectionDescription">每一道料理，都有它值得被記住的理由。</p></div>
+
+      <section class="food-picker" aria-labelledby="pickerTitle">
+        <div class="food-picker-copy"><span class="eyebrow">TODAY'S FOOD PICK</span><h3 id="pickerTitle">今天吃什麼？</h3><p>選擇困難的時候，就交給日日食光替你決定。從目前符合條件的料理中，隨機抽出一道吧！</p><div class="picker-actions"><button type="button" class="primary-btn" id="pickFoodBtn">幫我決定！</button><button type="button" class="picker-secondary" id="pickAgainBtn" disabled>再抽一次</button></div></div>
+        <div class="picked-food" id="pickedFood" aria-live="polite"><div class="picker-placeholder">🍽️<br>按下「幫我決定！」開始抽選</div></div>
+      </section>
       <div class="toolbar">
         <div class="filters" aria-label="料理分類">
           <button type="button" class="filter-btn active" data-category="全部">全部</button>
@@ -160,6 +173,36 @@
     favoritesNav.addEventListener("click",()=>setCategory("收藏"));exploreNav.addEventListener("click",()=>setCategory("全部"));document.getElementById("heroExplore").addEventListener("click",()=>setCategory("全部"));homeNav.addEventListener("click",()=>{resetFilters()});aboutNav.addEventListener("click",updateNavigation);
     closeDetailButton.addEventListener("click",closeFoodDetail);detailOverlay.addEventListener("click",event=>{if(event.target===detailOverlay)closeFoodDetail()});
     detailOverlay.addEventListener("keydown",event=>{if(event.key==="Escape"){event.preventDefault();closeFoodDetail();return}if(event.key!=="Tab")return;const focusable=[closeDetailButton,detailFavoriteButton],first=focusable[0],last=focusable[focusable.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}});
+    // 「今天吃什麼」會沿用目前分類、搜尋、價格範圍與排序條件。
+    let lastPickedFood=null;
+    function getFoodsForPicker(){
+      const keyword=search.value.trim().toLocaleLowerCase();
+      const minValue=minPriceInput.value===""?null:Number(minPriceInput.value);
+      const maxValue=maxPriceInput.value===""?null:Number(maxPriceInput.value);
+      let result=foods.filter(food=>{
+        const matchCategory=currentCategory==="全部"||(currentCategory==="收藏"?isFavorite(food):food.category===currentCategory);
+        const searchableText=[food.name,food.category,food.description,food.features,food.ingredients,food.reason,food.occasion,food.price].join(" ").toLocaleLowerCase();
+        const price=getPrice(food);
+        return matchCategory&&(!keyword||searchableText.includes(keyword))&&(minValue===null||!Number.isFinite(minValue)||price>=minValue)&&(maxValue===null||!Number.isFinite(maxValue)||price<=maxValue);
+      });
+      if(sortSelect.value==="price-asc")result.sort((a,b)=>getPrice(a)-getPrice(b));
+      else if(sortSelect.value==="price-desc")result.sort((a,b)=>getPrice(b)-getPrice(a));
+      else if(sortSelect.value==="name-asc")result.sort((a,b)=>a.name.localeCompare(b.name,"zh-Hant"));
+      return result;
+    }
+    function pickFood(){
+      const available=getFoodsForPicker();
+      const resultBox=document.getElementById("pickedFood");
+      if(!available.length){showToast("目前條件下沒有可抽選的料理，請調整分類或篩選條件。");return;}
+      let choices=available.filter(food=>!lastPickedFood||food.name!==lastPickedFood.name);
+      if(!choices.length)choices=available;
+      const food=choices[Math.floor(Math.random()*choices.length)];lastPickedFood=food;
+      resultBox.innerHTML=`<img src="https://images.unsplash.com/${food.image}?auto=format&fit=crop&w=400&q=80" alt="${food.name}" onerror="this.style.display='none'"><div><span class="tag">${food.category}</span><h4>${food.name}</h4><p>${food.description}</p><strong class="price">${food.price}</strong><button type="button" class="picked-detail-link" id="pickedDetailLink">查看詳細介紹 →</button></div>`;
+      document.getElementById("pickedDetailLink").addEventListener("click",()=>openFoodDetail(food,document.getElementById("pickFoodBtn")));
+      document.getElementById("pickAgainBtn").disabled=false;
+    }
+    document.getElementById("pickFoodBtn").addEventListener("click",pickFood);
+    document.getElementById("pickAgainBtn").addEventListener("click",pickFood);
     // 價格上下限若輸入相反，仍保留使用者輸入並顯示零筆結果，方便直接看出範圍不符。
     updateFavoriteCount();updateNavigation();updateSectionHeading();renderFoods();
   </script>
